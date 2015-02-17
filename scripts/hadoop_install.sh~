@@ -1,0 +1,16 @@
+#/bin/bash
+#GET HADOOP
+CUR_DIR=`dirname $0`
+JOM=/home/hdpusr
+#echo "$DASH Copiando instalador de Apache Hadoop desde: $CUR_DIR"
+cp $CUR_DIR/../binaries/hadoop-*[0-9].tar.gz $JOM
+mkdir current-hadoop && tar xf hadoop-*[0-9].tar.gz -C current-hadoop --strip-components 1
+mkdir -p hdfs/namenode
+mkdir -p hdfs/datanode
+cat $CUR_DIR/../cfg/*.bashrc >> $JOM/.bashrc
+cp $CUR_DIR/../cfg/*.xml $JOM/current-hadoop/etc/hadoop
+cp $CUR_DIR/../cfg/hadoop-env.sh $JOM/current-hadoop/etc/hadoop
+
+echo "NOW as $HADOOP_USER FORMAT THE NAMENODE WITH:$ hdfs namenode -format"
+echo "Then start Hadoop with:$ start-dfs.sh"
+

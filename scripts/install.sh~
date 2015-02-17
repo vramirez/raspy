@@ -1,0 +1,24 @@
+#!/bin/bash
+HADOOP_USER=hdpusr
+HADOOP_GROUP=hadoop
+DASH="####################"
+apt-get update
+echo "$DASH Instalando Java $DASH"
+apt-get install visudo openjdk-7-jdk
+echo "$DASH Java instalado $DASH"
+java -version
+echo "$DASH Creando usuario... $DASH"
+#sh create_hdp_usr.sh $HADOOP_USER $HADOOP_GROUP
+echo "hdpusr ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+echo "$DASH Usuario $HADOOP_USER creado en el grupo $HADOOP_GROUP $DASH"
+
+sleep 10s
+cat cfg/hdp_usr.bashrc >> /home/hdpusr/.bashrc
+echo "$DASH Generando passphrase $DASH"
+su hdpusr -c "ssh-keygen -t dsa -P '' -f ~/.ssh/id_dsa"
+su hdpusr -c "cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys"
+echo "$DASH passphrase Ok, recuerde hacer 'ssh localhost' $DASH"
+sleep 10s
+echo "$DASH Descargando y extrayendo Hadoop $DASH"
+#Get Hadoop and install it
+sh hadoop_install.sh
