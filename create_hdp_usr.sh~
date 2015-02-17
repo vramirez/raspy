@@ -1,5 +1,0 @@
-#!/bin/bash
-groupadd $2
-useradd -mg 
-
-
